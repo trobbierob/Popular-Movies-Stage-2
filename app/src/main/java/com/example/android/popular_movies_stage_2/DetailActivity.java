@@ -10,11 +10,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.android.popular_movies_stage_2.utilities.NetworkUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -22,6 +24,9 @@ public class DetailActivity extends AppCompatActivity {
 
     private URL movieTrailerReview;
     private String api_key;
+
+    private ArrayList<String> videoKeyArray = new ArrayList<String>();
+    private ArrayList<String> reviewContentArray = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,15 +76,34 @@ public class DetailActivity extends AppCompatActivity {
                     String jsonString = NetworkUtils.getResponseFromHttpUrl(movieTrailerReview);
                     JSONObject jsonRootObject = new JSONObject(jsonString);
                     Log.i(TAG,"Trailer & Review Root Object is: " + jsonRootObject);
-                    JSONObject resultsArray = jsonRootObject.optJSONObject("videos");
-                    Log.i(TAG,"Results Array is: " + resultsArray);
+                    JSONObject videosObject = jsonRootObject.optJSONObject("videos");
+                    Log.i(TAG,"Results Array is: " + videosObject);
+                    JSONArray videosArray = videosObject.optJSONArray("results");
+
+                    for (int i = 0; i < videosArray.length(); i++) {
+                        JSONObject jsonVideoResult = videosArray.getJSONObject(i);
+                        String videoKey = jsonVideoResult.optString("key");
+                        videoKeyArray.add(videoKey);
+                    }
+
+                    JSONObject reviewsObject = jsonRootObject.optJSONObject("reviews");
+                    Log.i(TAG,"Reviews Array is: " + reviewsObject);
+                    JSONArray reviewArray = reviewsObject.optJSONArray("results");
+
+                    for (int i = 0; i < reviewArray.length(); i++) {
+                        JSONObject jsonReviewResult = reviewArray.getJSONObject(i);
+                        String reviewContent = jsonReviewResult.optString("content");
+                        reviewContentArray.add(reviewContent);
+                    }
+                    
+                    Log.i(TAG,"Video key is: " + videoKeyArray);
+                    Log.i(TAG,"Review content is: " + reviewContentArray);
 
                 } catch (IOException e) {
-
+                    Log.e(TAG,"IOException error is: " + e);
                 } catch (JSONException e) {
-
+                    Log.e(TAG,"JSONException error is: " + e);
                 }
-
             }
             return null;
         }

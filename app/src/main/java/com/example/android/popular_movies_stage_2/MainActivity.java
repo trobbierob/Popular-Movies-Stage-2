@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -173,9 +174,9 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 } catch (IOException e) {
-
+                    Log.e(TAG,"IOException error is: " + e);
                 } catch (JSONException e) {
-
+                    Log.e(TAG,"JSONException error is: " + e);
                 }
             }
             return null;
