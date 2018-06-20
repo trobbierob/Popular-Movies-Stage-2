@@ -67,6 +67,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
         public void onClick(View view) {
             Movie currentMovie = mMovieData.get(getAdapterPosition());
             Intent detailIntent = new Intent(mContext, DetailActivity.class);
+            detailIntent.putExtra("id", currentMovie.getId());
             detailIntent.putExtra("title", currentMovie.getTitle());
             detailIntent.putExtra("image_resource", currentMovie.getImageResource());
             detailIntent.putExtra("backdrop", currentMovie.getBackdrop());

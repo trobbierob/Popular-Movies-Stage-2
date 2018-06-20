@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -69,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         mMovieData = new ArrayList<>();
 
         //Initialize Adapter and set it to RecyclerView
-        mAdapter = new MovieAdapter(this,mMovieData);
+        mAdapter = new MovieAdapter(this, mMovieData);
         mRecyclerView.setAdapter(mAdapter);
 
         //Load movies at startup
@@ -107,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
             if (activeNetwork != null) { // connected to the internet
                 SORT_BY = 0;
-                new MovieQueryTask().execute();
+                new MovieQueryTask().execute(api_key);
             } else { // not connected to the internet
                 Toast.makeText(this,"Check Internet Connection",
                         Toast.LENGTH_SHORT).show();
@@ -118,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
             if (activeNetwork != null) { // connected to the internet
                 SORT_BY = 1;
-                new MovieQueryTask().execute();
+                new MovieQueryTask().execute(api_key);
             } else { // not connected to the internet
                 Toast.makeText(this,"Check Internet Connection",
                         Toast.LENGTH_SHORT).show();
@@ -127,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class MovieQueryTask extends AsyncTask<Void, Void, Void>{
+    public class MovieQueryTask extends AsyncTask<String, Void, Void>{
 
         @Override
         protected void onPreExecute() {
@@ -140,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Void doInBackground(String... voids) {
 
             if (movieQueryUrl != null) {
                 try {
@@ -171,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
 
                         String movieId = jsonFirstResult.optString("id");
                         movieIdArray.add(movieId);
-                        Log.i(TAG,"Movie ID is: " + movieIdArray);
                     }
 
                 } catch (IOException e) {
@@ -194,16 +192,16 @@ public class MainActivity extends AppCompatActivity {
             String [] movieVoteAverageArrayConvert = movieVoteAverageArray.toArray(new String[movieVoteAverageArray.size()]);
             String [] movieOverviewArrayConvert = movieOverviewArray.toArray(new String[movieOverviewArray.size()]);
             String [] movieReleaseDateArrayConvert = movieReleaseDateArray.toArray(new String[movieReleaseDateArray.size()]);
-
+            String [] movieIdArrayConvert = movieIdArray.toArray(new String[movieIdArray.size()]);
             mMovieData.clear();
 
             //Add data into Movie
             for (int i=0; i < movieTitleArrayConvert.length; i++){
                 mMovieData.add(new Movie(movieTitleArrayConvert[i], moviePosterArrayConvert[i],
                         movieVoteAverageArrayConvert[i], movieOverviewArrayConvert[i],
-                        movieReleaseDateArrayConvert[i], movieBackdropArrayConvert[i]));
+                        movieReleaseDateArrayConvert[i], movieBackdropArrayConvert[i],
+                        movieIdArrayConvert[i]));
             }
-
             mAdapter.notifyDataSetChanged();
         }
     }

@@ -8,4 +8,5 @@
     <string name="photo">Photo</string>
     <string name="user_rating">User Rating:&#160;</string>
     <string name="release_date">Release Date:&#160;</string>
+    <string name="comma">%2C</string>
 </resources>

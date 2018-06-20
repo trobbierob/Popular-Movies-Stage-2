@@ -23,14 +23,28 @@ public final class NetworkUtils {
      */
     private static final String API_KEY = "";
 
-    private static final String LANGUAGE = "en-US";
-
-    private static final String SORT_BY = ".desc";
-
     public static URL buildUrl(String string, String api_key) {
         Uri builtUri = Uri.parse(BASE_MOVIE_URL + string).buildUpon()
                 .appendQueryParameter("api_key", api_key)
-                .appendQueryParameter("language", LANGUAGE)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Log.v(TAG, "Built URI " + url);
+
+        return url;
+    }
+
+    public static URL buildUrl(String movieId, String api_key, int num) {
+
+        Uri builtUri = Uri.parse(BASE_MOVIE_URL + movieId).buildUpon()
+                .appendQueryParameter("api_key", api_key)
+                .appendQueryParameter("append_to_response", "videos,reviews")
                 .build();
 
         URL url = null;
