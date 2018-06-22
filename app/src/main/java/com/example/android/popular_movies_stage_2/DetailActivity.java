@@ -26,6 +26,8 @@ public class DetailActivity extends AppCompatActivity {
     private String api_key;
 
     private ArrayList<String> videoKeyArray = new ArrayList<String>();
+    private ArrayList<String> videoNameArray = new ArrayList<String>();
+    private ArrayList<String> reviewAuthorArray = new ArrayList<String>();
     private ArrayList<String> reviewContentArray = new ArrayList<String>();
 
     @Override
@@ -82,22 +84,27 @@ public class DetailActivity extends AppCompatActivity {
 
                     for (int i = 0; i < videosArray.length(); i++) {
                         JSONObject jsonVideoResult = videosArray.getJSONObject(i);
+                        String videoName = jsonVideoResult.optString("name");
                         String videoKey = jsonVideoResult.optString("key");
+                        videoNameArray.add(videoName);
                         videoKeyArray.add(videoKey);
                     }
 
                     JSONObject reviewsObject = jsonRootObject.optJSONObject("reviews");
-                    Log.i(TAG,"Reviews Array is: " + reviewsObject);
                     JSONArray reviewArray = reviewsObject.optJSONArray("results");
 
                     for (int i = 0; i < reviewArray.length(); i++) {
                         JSONObject jsonReviewResult = reviewArray.getJSONObject(i);
+                        String reviewAuthor = jsonReviewResult.optString("author");
                         String reviewContent = jsonReviewResult.optString("content");
+                        reviewAuthorArray.add(reviewAuthor);
                         reviewContentArray.add(reviewContent);
                     }
-                    
-                    Log.i(TAG,"Video key is: " + videoKeyArray);
-                    Log.i(TAG,"Review content is: " + reviewContentArray);
+
+                    Log.i(TAG,"Video key array is: " + videoKeyArray);
+                    Log.i(TAG,"Video name array is: " + videoNameArray);
+                    Log.i(TAG,"Review author array is: " + reviewAuthorArray);
+                    Log.i(TAG,"Review content array is: " + reviewContentArray);
 
                 } catch (IOException e) {
                     Log.e(TAG,"IOException error is: " + e);
