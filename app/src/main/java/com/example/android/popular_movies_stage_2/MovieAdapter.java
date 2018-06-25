@@ -36,7 +36,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
 
         //Populate Views with Data
         holder.bindTo(currentMovie);
-        Glide.with(mContext).load(currentMovie.getImageResource()).into(holder.mMoviePoster);
+        Glide.with(mContext).load(currentMovie.getImageUrl()).into(holder.mMoviePoster);
     }
 
     @Override
@@ -60,7 +60,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
 
         void bindTo(Movie currentMovie){
             //Populate ImageView
-            Glide.with(mContext).load(currentMovie.getImageResource()).into(mMoviePoster);
+            Glide.with(mContext).load(currentMovie.getImageUrl()).into(mMoviePoster);
         }
 
         @Override
@@ -69,7 +69,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
             Intent detailIntent = new Intent(mContext, DetailActivity.class);
             detailIntent.putExtra("id", currentMovie.getId());
             detailIntent.putExtra("title", currentMovie.getTitle());
-            detailIntent.putExtra("image_resource", currentMovie.getImageResource());
+            detailIntent.putExtra("image_resource", currentMovie.getImageUrl());
             detailIntent.putExtra("backdrop", currentMovie.getBackdrop());
             detailIntent.putExtra("overview", currentMovie.getOverview());
             detailIntent.putExtra("user_rating", currentMovie.getVoteAverage());

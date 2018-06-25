@@ -10,6 +10,14 @@ public class Movie {
     private String backdrop;
     private String id;
 
+    public Movie() {
+    }
+
+    public Movie(String title, String id) {
+        this.title = title;
+        this.id = id;
+    }
+
     Movie(String title, String imageUrl, String voteAverage, String overview, String releaseDate, String backdrop) {
         this.title = title;
 
@@ -44,32 +52,72 @@ public class Movie {
         this.id = id;
     }
 
-    String getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    String getImageResource() {
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getImageUrl() {
         return imageUrl;
     }
 
-    String getVoteAverage() {
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getVoteAverage() {
         return voteAverage;
     }
 
-    String getOverview() {
+    public void setVoteAverage(String voteAverage) {
+        this.voteAverage = voteAverage;
+    }
+
+    public String getOverview() {
         return overview;
     }
 
-    String getReleaseDate() {
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public String getReleaseDate() {
         return releaseDate;
     }
 
-    String getBackdrop() {
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public String getBackdrop() {
         return backdrop;
     }
 
-    String getId() {
+    public void setBackdrop(String backdrop) {
+        this.backdrop = backdrop;
+    }
+
+    public String getId() {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "title='" + title + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", voteAverage='" + voteAverage + '\'' +
+                ", overview='" + overview + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", backdrop='" + backdrop + '\'' +
+                ", id='" + id + '\'' +
+                '}';
+    }
 }
