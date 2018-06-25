@@ -1,6 +1,7 @@
 package com.example.android.popular_movies_stage_2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -123,6 +124,9 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this,"Check Internet Connection",
                         Toast.LENGTH_SHORT).show();
             }
+        } else if(menuItemSelected == R.id.action_bar_favorites){
+            Intent favIntent = new Intent(this, FavoritesActivity.class);
+            startActivity(favIntent);
         }
         return super.onOptionsItemSelected(item);
     }
