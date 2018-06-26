@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.android.popular_movies_stage_2.db.MovieDatabase;
 import com.example.android.popular_movies_stage_2.utilities.NetworkUtils;
 
 import org.json.JSONArray;
@@ -30,10 +31,14 @@ public class DetailActivity extends AppCompatActivity {
     private ArrayList<String> reviewAuthorArray = new ArrayList<String>();
     private ArrayList<String> reviewContentArray = new ArrayList<String>();
 
+    private MovieDatabase db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        db = MovieDatabase.getInstance(this);
 
         //API KEY
         api_key = getResources().getString(R.string.api_key);
@@ -56,6 +61,12 @@ public class DetailActivity extends AppCompatActivity {
         movieSynopsis.setText(getIntent().getStringExtra("overview"));
         movieRating.setText(getString(R.string.user_rating) + getIntent().getStringExtra("user_rating"));
         movieReleaseDate.setText(getString(R.string.release_date) + getIntent().getStringExtra("release_date"));
+    }
+
+    @Override
+    protected void onDestroy() {
+        MovieDatabase.destroyInstance();
+        super.onDestroy();
     }
 
     public class TrailerReviewTask extends AsyncTask<String, Void, Void>{

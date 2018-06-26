@@ -1,26 +1,43 @@
 package com.example.android.popular_movies_stage_2;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
+@Entity
 public class Movie implements Parcelable {
 
-    private String title;
-    private String imageUrl;
-    private String voteAverage;
-    private String overview;
-    private String releaseDate;
-    private String backdrop;
+    @PrimaryKey
+    @NonNull
     private String id;
+    @ColumnInfo()
+    private String title;
+    @Ignore
+    private String imageUrl;
+    @Ignore
+    private String voteAverage;
+    @Ignore
+    private String overview;
+    @Ignore
+    private String releaseDate;
+    @Ignore
+    private String backdrop;
+
 
     public Movie() {
     }
 
+    @Ignore
     public Movie(String title, String id) {
         this.title = title;
         this.id = id;
     }
 
+    @Ignore
     Movie(String title, String imageUrl, String voteAverage, String overview, String releaseDate, String backdrop) {
         this.title = title;
 
@@ -37,6 +54,7 @@ public class Movie implements Parcelable {
         this.backdrop = BASE_URL_BACKDROP + BASE_SIZE_BACKDROP + backdrop;
     }
 
+    @Ignore
     Movie(String title, String imageUrl, String voteAverage, String overview, String releaseDate, String backdrop, String id) {
         this.title = title;
 
