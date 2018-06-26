@@ -28,6 +28,8 @@ public class FavoritesActivity extends AppCompatActivity {
             }
         });
 
+        getSupportActionBar().setTitle("Favorites");
+
         FavoriteMovieAdapter fMA = new FavoriteMovieAdapter(this, movieList);
         RecyclerView recyclerView = findViewById(R.id.fav_recyclerview);
         recyclerView.setAdapter(fMA);

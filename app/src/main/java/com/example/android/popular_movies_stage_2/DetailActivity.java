@@ -4,8 +4,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.android.popular_movies_stage_2.db.MovieDatabase;
@@ -38,8 +41,6 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        db = MovieDatabase.getInstance(this);
-
         //API KEY
         api_key = getResources().getString(R.string.api_key);
 
@@ -61,6 +62,31 @@ public class DetailActivity extends AppCompatActivity {
         movieSynopsis.setText(getIntent().getStringExtra("overview"));
         movieRating.setText(getString(R.string.user_rating) + getIntent().getStringExtra("user_rating"));
         movieReleaseDate.setText(getString(R.string.release_date) + getIntent().getStringExtra("release_date"));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.detail_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int menuItemSelected = item.getItemId();
+        if (menuItemSelected == R.id.add_to_favorites) {
+            // TODO Add code here to add movie to Database
+
+            db = MovieDatabase.getInstance(this);
+            int itemCount = db.movieDao().countMovie();
+
+            if (itemCount == 0) {
+
+            }
+
+            Toast.makeText(this,"Database item added", Toast.LENGTH_SHORT).show();
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
