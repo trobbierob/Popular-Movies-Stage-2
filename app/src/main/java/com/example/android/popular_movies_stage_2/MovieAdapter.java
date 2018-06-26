@@ -29,6 +29,9 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
         return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.list_item, parent, false));
     }
 
+    /*
+     * Load movies into MainActivity
+     */
     @Override
     public void onBindViewHolder(MovieAdapter.ViewHolder holder, int position) {
         //Get the current Movie

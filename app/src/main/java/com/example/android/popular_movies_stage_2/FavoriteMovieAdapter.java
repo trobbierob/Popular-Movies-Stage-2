@@ -36,7 +36,7 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
         final Movie movie = mMovies.get(position);
 
         holder.movieTitle.setText(movie.getTitle());
-        
+
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
