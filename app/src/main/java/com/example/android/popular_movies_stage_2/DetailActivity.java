@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.android.popular_movies_stage_2.db.MovieDatabase;
 import com.example.android.popular_movies_stage_2.utilities.NetworkUtils;
 
@@ -56,12 +55,26 @@ public class DetailActivity extends AppCompatActivity {
 
         test();
 
-        movieTitle.setText(getIntent().getStringExtra("title"));
+        Movie movie = getIntent().getExtras().getParcelable(MovieAdapter.ITEM_KEY);
+        if (movie != null) {
+            Toast.makeText(this,"Received Parcelable: " + movie.getTitle(),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this,"Shits weak, brah",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        movieTitle.setText(movie.getTitle());
+        movieSynopsis.setText(movie.getOverview());
+        movieRating.setText(movie.getVoteAverage());
+        movieReleaseDate.setText(movie.getReleaseDate());
+
+        /*movieTitle.setText(getIntent().getStringExtra("title"));
         Glide.with(this).load(getIntent().getStringExtra("image_resource")).into(movieImage);
         Glide.with(this).load(getIntent().getStringExtra("backdrop")).into(backdropImage);
         movieSynopsis.setText(getIntent().getStringExtra("overview"));
         movieRating.setText(getString(R.string.user_rating) + getIntent().getStringExtra("user_rating"));
-        movieReleaseDate.setText(getString(R.string.release_date) + getIntent().getStringExtra("release_date"));
+        movieReleaseDate.setText(getString(R.string.release_date) + getIntent().getStringExtra("release_date"));*/
     }
 
     @Override

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
 
     private static final String TAG = MovieAdapter.class.getSimpleName();
+    public static final String ITEM_KEY = "item_key";
 
     private ArrayList<Movie> mMovieData;
     private Context mContext;
@@ -70,13 +71,14 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
         public void onClick(View view) {
             Movie currentMovie = mMovieData.get(getAdapterPosition());
             Intent detailIntent = new Intent(mContext, DetailActivity.class);
-            detailIntent.putExtra("id", currentMovie.getId());
+            detailIntent.putExtra(ITEM_KEY, currentMovie);
+            /*detailIntent.putExtra("id", currentMovie.getId());
             detailIntent.putExtra("title", currentMovie.getTitle());
             detailIntent.putExtra("image_resource", currentMovie.getImageUrl());
             detailIntent.putExtra("backdrop", currentMovie.getBackdrop());
             detailIntent.putExtra("overview", currentMovie.getOverview());
             detailIntent.putExtra("user_rating", currentMovie.getVoteAverage());
-            detailIntent.putExtra("release_date", currentMovie.getReleaseDate());
+            detailIntent.putExtra("release_date", currentMovie.getReleaseDate());*/
             mContext.startActivity(detailIntent);
         }
     }
