@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.android.popular_movies_stage_2.db.MovieDatabase;
 import com.example.android.popular_movies_stage_2.utilities.NetworkUtils;
 
@@ -51,30 +52,24 @@ public class DetailActivity extends AppCompatActivity {
         TextView movieRating = (TextView) findViewById(R.id.detail_user_rating);
         TextView movieReleaseDate = (TextView) findViewById(R.id.detail_release_date);
 
-        getSupportActionBar().setTitle(getIntent().getStringExtra("title"));
-
-        test();
-
         Movie movie = getIntent().getExtras().getParcelable(MovieAdapter.ITEM_KEY);
         if (movie != null) {
-            Toast.makeText(this,"Received Parcelable: " + movie.getTitle(),
-                    Toast.LENGTH_SHORT).show();
+            // Pass title to Action Bar
+            getSupportActionBar().setTitle(movie.getTitle());
+
+            // Get Trailers and Reviews
+            new TrailerReviewTask().execute(movie.getId());
+
+            // Fill in layout
+            movieTitle.setText(movie.getTitle());
+            movieSynopsis.setText(movie.getOverview());
+            movieRating.setText(movie.getVoteAverage());
+            movieReleaseDate.setText(movie.getReleaseDate());
+            Glide.with(this).load(movie.getImageUrl()).into(movieImage);
+            Glide.with(this).load(movie.getBackdrop()).into(backdropImage);
         } else {
-            Toast.makeText(this,"Shits weak, brah",
-                    Toast.LENGTH_SHORT).show();
+            Log.e(TAG,"Parcelable not passed.");
         }
-
-        movieTitle.setText(movie.getTitle());
-        movieSynopsis.setText(movie.getOverview());
-        movieRating.setText(movie.getVoteAverage());
-        movieReleaseDate.setText(movie.getReleaseDate());
-
-        /*movieTitle.setText(getIntent().getStringExtra("title"));
-        Glide.with(this).load(getIntent().getStringExtra("image_resource")).into(movieImage);
-        Glide.with(this).load(getIntent().getStringExtra("backdrop")).into(backdropImage);
-        movieSynopsis.setText(getIntent().getStringExtra("overview"));
-        movieRating.setText(getString(R.string.user_rating) + getIntent().getStringExtra("user_rating"));
-        movieReleaseDate.setText(getString(R.string.release_date) + getIntent().getStringExtra("release_date"));*/
     }
 
     @Override
@@ -88,16 +83,11 @@ public class DetailActivity extends AppCompatActivity {
         int menuItemSelected = item.getItemId();
         if (menuItemSelected == R.id.add_to_favorites) {
             // TODO Add code here to add movie to Database
-
             db = MovieDatabase.getInstance(this);
             int itemCount = db.movieDao().countMovie();
-
             if (itemCount == 0) {
-
             }
-
             Toast.makeText(this,"Database item added", Toast.LENGTH_SHORT).show();
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -111,19 +101,16 @@ public class DetailActivity extends AppCompatActivity {
     public class TrailerReviewTask extends AsyncTask<String, Void, Void>{
 
         @Override
-        protected void onPreExecute() {
-
-            movieTrailerReview = NetworkUtils.buildUrl(getIntent().getStringExtra("id"), api_key, 0);
-            Log.i(TAG, "Movie Trailer Review URL is: " + movieTrailerReview);
-
-        }
-
-        @Override
         protected Void doInBackground(String... strings) {
+
+            movieTrailerReview = NetworkUtils.buildUrl(strings[0], api_key, 0);
+            Log.i(TAG, "Movie Trailer Review URL is: " + movieTrailerReview);
 
             if (movieTrailerReview != null){
 
                 try {
+
+                    Log.i(TAG,"The strings variable is: " + strings);
 
                     String jsonString = NetworkUtils.getResponseFromHttpUrl(movieTrailerReview);
                     JSONObject jsonRootObject = new JSONObject(jsonString);
@@ -164,9 +151,5 @@ public class DetailActivity extends AppCompatActivity {
             }
             return null;
         }
-    }
-
-    private void test(){
-        new TrailerReviewTask().execute("Mmmm hmmm");
     }
 }
