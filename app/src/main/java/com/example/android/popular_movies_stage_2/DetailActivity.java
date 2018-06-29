@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.android.popular_movies_stage_2.db.MovieDatabase;
@@ -36,6 +35,8 @@ public class DetailActivity extends AppCompatActivity {
 
     private MovieDatabase db;
 
+    private Movie movie;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +53,7 @@ public class DetailActivity extends AppCompatActivity {
         TextView movieRating = (TextView) findViewById(R.id.detail_user_rating);
         TextView movieReleaseDate = (TextView) findViewById(R.id.detail_release_date);
 
-        Movie movie = getIntent().getExtras().getParcelable(MovieAdapter.ITEM_KEY);
+        movie = getIntent().getExtras().getParcelable(MovieAdapter.ITEM_KEY);
         if (movie != null) {
             // Pass title to Action Bar
             getSupportActionBar().setTitle(movie.getTitle());
@@ -84,10 +85,19 @@ public class DetailActivity extends AppCompatActivity {
         if (menuItemSelected == R.id.add_to_favorites) {
             // TODO Add code here to add movie to Database
             db = MovieDatabase.getInstance(this);
-            int itemCount = db.movieDao().countMovie();
+
+            db.movieDao().insertAll(movie);
+            /*int itemCount = db.movieDao().countMovie();
             if (itemCount == 0) {
-            }
-            Toast.makeText(this,"Database item added", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"Database item added", Toast.LENGTH_SHORT)
+                        .show();
+                //movie.getTitle();
+
+            } else {
+                Toast.makeText(this,"Nah, fam", Toast.LENGTH_SHORT)
+                        .show();
+            }*/
+
         }
         return super.onOptionsItemSelected(item);
     }
