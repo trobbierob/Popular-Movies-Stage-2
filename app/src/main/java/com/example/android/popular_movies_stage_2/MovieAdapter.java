@@ -30,9 +30,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
         return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.list_item, parent, false));
     }
 
-    /*
-     * Load movies into MainActivity
-     */
+    //Load movies into MainActivity
     @Override
     public void onBindViewHolder(MovieAdapter.ViewHolder holder, int position) {
         //Get the current Movie
@@ -72,13 +70,6 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
             Movie currentMovie = mMovieData.get(getAdapterPosition());
             Intent detailIntent = new Intent(mContext, DetailActivity.class);
             detailIntent.putExtra(ITEM_KEY, currentMovie);
-            /*detailIntent.putExtra("id", currentMovie.getId());
-            detailIntent.putExtra("title", currentMovie.getTitle());
-            detailIntent.putExtra("image_resource", currentMovie.getImageUrl());
-            detailIntent.putExtra("backdrop", currentMovie.getBackdrop());
-            detailIntent.putExtra("overview", currentMovie.getOverview());
-            detailIntent.putExtra("user_rating", currentMovie.getVoteAverage());
-            detailIntent.putExtra("release_date", currentMovie.getReleaseDate());*/
             mContext.startActivity(detailIntent);
         }
     }

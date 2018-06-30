@@ -10,4 +10,7 @@
     <string name="release_date">Release Date:&#160;</string>
     <string name="comma">%2C</string>
     <string name="favorites">Favorites</string>
+    <string name="favorites_ab">Favorites</string>
+    <string name="check_internet">Check Internet Connection</string>
+    <string name="parcelable_not_passed">Parcelable not passed.</string>
 </resources>

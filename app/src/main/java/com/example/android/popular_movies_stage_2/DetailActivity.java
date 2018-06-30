@@ -69,7 +69,7 @@ public class DetailActivity extends AppCompatActivity {
             Glide.with(this).load(movie.getImageUrl()).into(movieImage);
             Glide.with(this).load(movie.getBackdrop()).into(backdropImage);
         } else {
-            Log.e(TAG,"Parcelable not passed.");
+            Log.e(TAG,getString(R.string.parcelable_not_passed));
         }
     }
 
@@ -83,21 +83,9 @@ public class DetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int menuItemSelected = item.getItemId();
         if (menuItemSelected == R.id.add_to_favorites) {
-            // TODO Add code here to add movie to Database
             db = MovieDatabase.getInstance(this);
-
             db.movieDao().insertAll(movie);
-            /*int itemCount = db.movieDao().countMovie();
-            if (itemCount == 0) {
-                Toast.makeText(this,"Database item added", Toast.LENGTH_SHORT)
-                        .show();
-                //movie.getTitle();
-
-            } else {
-                Toast.makeText(this,"Nah, fam", Toast.LENGTH_SHORT)
-                        .show();
-            }*/
-
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -114,21 +102,15 @@ public class DetailActivity extends AppCompatActivity {
         protected Void doInBackground(String... strings) {
 
             movieTrailerReview = NetworkUtils.buildUrl(strings[0], api_key, 0);
-            Log.i(TAG, "Movie Trailer Review URL is: " + movieTrailerReview);
 
             if (movieTrailerReview != null){
 
                 try {
 
-                    Log.i(TAG,"The strings variable is: " + strings);
-
                     String jsonString = NetworkUtils.getResponseFromHttpUrl(movieTrailerReview);
                     JSONObject jsonRootObject = new JSONObject(jsonString);
-                    Log.i(TAG,"Trailer & Review Root Object is: " + jsonRootObject);
                     JSONObject videosObject = jsonRootObject.optJSONObject("videos");
-                    Log.i(TAG,"Results Array is: " + videosObject);
                     JSONArray videosArray = videosObject.optJSONArray("results");
-
                     for (int i = 0; i < videosArray.length(); i++) {
                         JSONObject jsonVideoResult = videosArray.getJSONObject(i);
                         String videoName = jsonVideoResult.optString("name");
@@ -139,7 +121,6 @@ public class DetailActivity extends AppCompatActivity {
 
                     JSONObject reviewsObject = jsonRootObject.optJSONObject("reviews");
                     JSONArray reviewArray = reviewsObject.optJSONArray("results");
-
                     for (int i = 0; i < reviewArray.length(); i++) {
                         JSONObject jsonReviewResult = reviewArray.getJSONObject(i);
                         String reviewAuthor = jsonReviewResult.optString("author");

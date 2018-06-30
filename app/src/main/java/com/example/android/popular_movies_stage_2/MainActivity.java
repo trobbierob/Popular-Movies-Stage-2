@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 SORT_BY = 0;
                 new MovieQueryTask().execute(api_key);
             } else { // not connected to the internet
-                Toast.makeText(this,"Check Internet Connection",
+                Toast.makeText(this, R.string.check_internet,
                         Toast.LENGTH_SHORT).show();
             }
         } else if(menuItemSelected == R.id.action_bar_top_rated){
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 SORT_BY = 1;
                 new MovieQueryTask().execute(api_key);
             } else { // not connected to the internet
-                Toast.makeText(this,"Check Internet Connection",
+                Toast.makeText(this,R.string.check_internet,
                         Toast.LENGTH_SHORT).show();
             }
         } else if(menuItemSelected == R.id.action_bar_favorites){

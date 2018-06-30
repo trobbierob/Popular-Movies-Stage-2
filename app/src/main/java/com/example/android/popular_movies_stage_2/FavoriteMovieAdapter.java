@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdapter.ViewHolder> {
@@ -30,12 +32,12 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
     }
 
     //Supply the data for the user
-    //Event Handlers
     @Override
     public void onBindViewHolder(FavoriteMovieAdapter.ViewHolder holder, int position) {
         final Movie movie = mMovies.get(position);
 
         holder.movieTitle.setText(movie.getTitle());
+        Glide.with(mContext).load(movie.getImageUrl()).into(holder.imageView);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,10 +45,6 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
                 Toast.makeText(mContext, movie.getTitle() + " selected.", Toast.LENGTH_SHORT).show();
             }
         });
-
-        //TODO What can we do with a long click?
-
-        //TODO Put code here for images if necessary
     }
 
     @Override

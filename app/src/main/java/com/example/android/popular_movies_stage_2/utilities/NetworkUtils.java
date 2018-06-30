@@ -1,7 +1,6 @@
 package com.example.android.popular_movies_stage_2.utilities;
 
 import android.net.Uri;
-import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +23,7 @@ public final class NetworkUtils {
     private static final String API_KEY = "";
 
     public static URL buildUrl(String string, String api_key) {
+
         Uri builtUri = Uri.parse(BASE_MOVIE_URL + string).buildUpon()
                 .appendQueryParameter("api_key", api_key)
                 .build();
@@ -34,8 +34,6 @@ public final class NetworkUtils {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
-        Log.v(TAG, "Built URI " + url);
 
         return url;
     }
@@ -54,16 +52,14 @@ public final class NetworkUtils {
             e.printStackTrace();
         }
 
-        Log.v(TAG, "Built URI " + url);
-
         return url;
     }
 
     public static String getResponseFromHttpUrl(URL url) throws IOException {
+
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = urlConnection.getInputStream();
-
             Scanner scanner = new Scanner(in);
             scanner.useDelimiter("\\A");
 

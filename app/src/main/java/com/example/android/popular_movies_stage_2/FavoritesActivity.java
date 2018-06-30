@@ -6,13 +6,12 @@ import android.support.v7.widget.RecyclerView;
 
 import com.example.android.popular_movies_stage_2.db.MovieDatabase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FavoritesActivity extends AppCompatActivity {
 
-    List<Movie> movieList; //= SampleDataProvider.movieList;
-    List<String> movieTitles = new ArrayList<>();
+    List<Movie> movieList;
+    //List<String> movieTitles = new ArrayList<>();
 
     private MovieDatabase db;
 
@@ -23,18 +22,10 @@ public class FavoritesActivity extends AppCompatActivity {
 
         db = MovieDatabase.getInstance(this);
 
-        /*Collections.sort(movieList, new Comparator<Movie>() {
-            @Override
-            public int compare(Movie movie, Movie t1) {
-                return movie.getTitle().compareTo(t1.getTitle());
-            }
-        });*/
-
-        getSupportActionBar().setTitle("Favorites");
+        getSupportActionBar().setTitle(R.string.favorites_ab);
 
         movieList = db.movieDao().getAll();
         FavoriteMovieAdapter fMA = new FavoriteMovieAdapter(this, movieList);
-
         RecyclerView recyclerView = findViewById(R.id.fav_recyclerview);
         recyclerView.setAdapter(fMA);
     }
