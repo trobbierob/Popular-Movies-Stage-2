@@ -18,6 +18,14 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
     private List<Movie> mMovies;
     private Context mContext;
 
+    public void setMovies(List<Movie> mMovies) {
+        this.mMovies = mMovies;
+    }
+
+    public List<Movie> getmMovies() {
+        return mMovies;
+    }
+
     public FavoriteMovieAdapter(Context context, List<Movie> movies) {
         this.mContext = context;
         this.mMovies = movies;
@@ -49,6 +57,9 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
 
     @Override
     public int getItemCount() {
+        if (mMovies == null) {
+            return 0;
+        }
         return mMovies.size();
     }
 

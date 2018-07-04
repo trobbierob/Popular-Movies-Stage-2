@@ -84,8 +84,14 @@ public class DetailActivity extends AppCompatActivity {
         int menuItemSelected = item.getItemId();
         if (menuItemSelected == R.id.add_to_favorites) {
             db = MovieDatabase.getInstance(this);
-            db.movieDao().insertAll(movie);
-            finish();
+
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    db.movieDao().insertAll(movie);
+                    finish();
+                }
+            });
         }
         return super.onOptionsItemSelected(item);
     }
@@ -146,8 +152,6 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-
-
         }
 
     }
