@@ -142,7 +142,6 @@ public class Movie implements Parcelable {
                 '}';
     }
 
-    // TODO Use Parcelable?
     @Override
     public int describeContents() {
         return 0;
