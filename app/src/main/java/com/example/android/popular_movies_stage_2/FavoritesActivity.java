@@ -11,7 +11,7 @@ import com.example.android.popular_movies_stage_2.db.MovieDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavoritesActivity extends AppCompatActivity {
+public class FavoritesActivity extends AppCompatActivity implements FavoriteMovieAdapter.ItemClickListener {
 
     List<Movie> movieList;
     List<String> movieTitles = new ArrayList<>();
@@ -28,8 +28,8 @@ public class FavoritesActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.favorites_ab);
 
         //movieList = db.movieDao().getAll();
-        mFavoriteMovieAdapter = new FavoriteMovieAdapter(this, movieList);
-        //mFavoriteMovieAdapter = new FavoriteMovieAdapter(this, this);
+        //mFavoriteMovieAdapter = new FavoriteMovieAdapter(this, movieList);
+        mFavoriteMovieAdapter = new FavoriteMovieAdapter(this, this);
         mRecyclerView = findViewById(R.id.fav_recyclerview);
         mRecyclerView.setAdapter(mFavoriteMovieAdapter);
 
@@ -48,6 +48,7 @@ public class FavoritesActivity extends AppCompatActivity {
                         int position = viewHolder.getAdapterPosition();
                         List<Movie> movies = mFavoriteMovieAdapter.getmMovies();
                         db.movieDao().deleteMovie(movies.get(position));
+                        updateMovies();
                     }
                 });
             }
@@ -66,6 +67,10 @@ public class FavoritesActivity extends AppCompatActivity {
          *java.lang.IllegalStateException: Cannot access database on the main thread
          *since it may potentially lock the UI for a long periods of time.
          */
+        updateMovies();
+    }
+
+    private void updateMovies() {
         new AsyncTask<Void, Void, Void>(){
             @Override
             protected Void doInBackground(Void... voids) {
@@ -86,5 +91,10 @@ public class FavoritesActivity extends AppCompatActivity {
                 return null;
             }
         }.execute();
+    }
+
+    @Override
+    public void onItemClickListener(int itemId) {
+
     }
 }

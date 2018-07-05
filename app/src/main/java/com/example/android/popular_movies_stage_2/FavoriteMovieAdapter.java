@@ -9,14 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-
 import java.util.List;
 
 public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdapter.ViewHolder> {
 
     private List<Movie> mMovies;
     private Context mContext;
+
+    final private ItemClickListener mItemClickListener;
 
     public void setMovies(List<Movie> mMovies) {
         this.mMovies = mMovies;
@@ -26,9 +26,18 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
         return mMovies;
     }
 
-    public FavoriteMovieAdapter(Context context, List<Movie> movies) {
+    /*public FavoriteMovieAdapter(Context context, List<Movie> movies) {
         this.mContext = context;
         this.mMovies = movies;
+    }*/
+
+    public interface ItemClickListener {
+        void onItemClickListener(int itemId);
+    }
+
+    public FavoriteMovieAdapter(Context context, ItemClickListener listener) {
+        this.mContext = context;
+        this.mItemClickListener = listener;
     }
 
     @Override
@@ -45,7 +54,7 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
         final Movie movie = mMovies.get(position);
 
         holder.movieTitle.setText(movie.getTitle());
-        Glide.with(mContext).load(movie.getImageUrl()).into(holder.imageView);
+        //Glide.with(mContext).load(movie.getImageUrl()).into(holder.imageView);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

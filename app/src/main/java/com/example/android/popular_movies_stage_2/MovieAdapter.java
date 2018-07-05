@@ -62,7 +62,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
 
         void bindTo(Movie currentMovie){
             //Populate ImageView
-            Glide.with(mContext).load(currentMovie.getImageUrl()).into(mMoviePoster);
+            //Glide.with(mContext).load(currentMovie.getImageUrl()).into(mMoviePoster);
         }
 
         @Override
