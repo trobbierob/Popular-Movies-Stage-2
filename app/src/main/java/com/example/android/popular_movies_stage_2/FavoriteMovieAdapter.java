@@ -16,8 +16,6 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
     private List<Movie> mMovies;
     private Context mContext;
 
-    final private ItemClickListener mItemClickListener;
-
     public void setMovies(List<Movie> mMovies) {
         this.mMovies = mMovies;
     }
@@ -26,18 +24,9 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
         return mMovies;
     }
 
-    /*public FavoriteMovieAdapter(Context context, List<Movie> movies) {
+    public FavoriteMovieAdapter(Context context, List<Movie> movies) {
         this.mContext = context;
         this.mMovies = movies;
-    }*/
-
-    public interface ItemClickListener {
-        void onItemClickListener(int itemId);
-    }
-
-    public FavoriteMovieAdapter(Context context, ItemClickListener listener) {
-        this.mContext = context;
-        this.mItemClickListener = listener;
     }
 
     @Override

@@ -11,7 +11,7 @@ import com.example.android.popular_movies_stage_2.db.MovieDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavoritesActivity extends AppCompatActivity implements FavoriteMovieAdapter.ItemClickListener {
+public class FavoritesActivity extends AppCompatActivity {
 
     List<Movie> movieList;
     List<String> movieTitles = new ArrayList<>();
@@ -27,9 +27,7 @@ public class FavoritesActivity extends AppCompatActivity implements FavoriteMovi
 
         getSupportActionBar().setTitle(R.string.favorites_ab);
 
-        //movieList = db.movieDao().getAll();
-        //mFavoriteMovieAdapter = new FavoriteMovieAdapter(this, movieList);
-        mFavoriteMovieAdapter = new FavoriteMovieAdapter(this, this);
+        mFavoriteMovieAdapter = new FavoriteMovieAdapter(this, movieList);
         mRecyclerView = findViewById(R.id.fav_recyclerview);
         mRecyclerView.setAdapter(mFavoriteMovieAdapter);
 
@@ -60,17 +58,15 @@ public class FavoritesActivity extends AppCompatActivity implements FavoriteMovi
     @Override
     protected void onResume() {
         super.onResume();
-        //movieList = db.movieDao().getAll();
+        updateMovies();
+    }
 
+    private void updateMovies() {
         /*
          *This AsyncTask will stop the crash
          *java.lang.IllegalStateException: Cannot access database on the main thread
          *since it may potentially lock the UI for a long periods of time.
          */
-        updateMovies();
-    }
-
-    private void updateMovies() {
         new AsyncTask<Void, Void, Void>(){
             @Override
             protected Void doInBackground(Void... voids) {
@@ -91,10 +87,5 @@ public class FavoritesActivity extends AppCompatActivity implements FavoriteMovi
                 return null;
             }
         }.execute();
-    }
-
-    @Override
-    public void onItemClickListener(int itemId) {
-
     }
 }
