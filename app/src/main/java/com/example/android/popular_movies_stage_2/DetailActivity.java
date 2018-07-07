@@ -4,10 +4,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.android.popular_movies_stage_2.db.MovieDatabase;
@@ -40,6 +40,8 @@ public class DetailActivity extends AppCompatActivity {
 
     private boolean movieExists;
 
+    private ImageView favImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,15 +53,20 @@ public class DetailActivity extends AppCompatActivity {
         TextView movieTitle = (TextView) findViewById(R.id.detail_title);
         ImageView movieImage = (ImageView) findViewById(R.id.detail_movieImage);
         ImageView backdropImage = (ImageView) findViewById(R.id.detail_backdrop);
+        favImage = (ImageView) findViewById(R.id.detail_fav);
 
         TextView movieSynopsis = (TextView) findViewById(R.id.detail_synopsis);
         TextView movieRating = (TextView) findViewById(R.id.detail_user_rating);
         TextView movieReleaseDate = (TextView) findViewById(R.id.detail_release_date);
 
         movie = getIntent().getExtras().getParcelable(MovieAdapter.ITEM_KEY);
+
         if (movie != null) {
             // Pass title to Action Bar
             getSupportActionBar().setTitle(movie.getTitle());
+
+            // Check to see if movie exists in database
+            checkExistence();
 
             // Get Trailers and Reviews
             new TrailerReviewTask().execute(movie.getId());
@@ -74,42 +81,63 @@ public class DetailActivity extends AppCompatActivity {
         } else {
             Log.e(TAG,getString(R.string.parcelable_not_passed));
         }
+
+        favImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (movieExists){
+                    removeFromDatabase();
+                } else {
+                    addToDatabase();
+                }
+            }
+        });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.detail_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int menuItemSelected = item.getItemId();
+    private void removeFromDatabase() {
         db = MovieDatabase.getInstance(this);
-        if (menuItemSelected == R.id.add_to_favorites) {
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    db.movieDao().insertAll(movie);
-                    finish();
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                db.movieDao().deleteMovie(movie);
+                finish();
+            }
+        });
+        Toast.makeText(this,"Deleted",Toast.LENGTH_SHORT).show();
+    }
+
+    private void addToDatabase() {
+        db = MovieDatabase.getInstance(this);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                db.movieDao().insertAll(movie);
+                finish();
+            }
+        });
+        Toast.makeText(this,"Added",Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Returns a boolean when checking the database for a movie title
+     */
+    private boolean checkExistence(){
+        db = MovieDatabase.getInstance(this);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, "Current movie title is: " + movie.getTitle());
+                Log.i(TAG, "Movie titles are: " + Arrays.toString(db.movieDao().movieTitles()));
+                if (Arrays.asList(db.movieDao().movieTitles()).contains(movie.getTitle())) {
+                    movieExists = true;
+                } else {
+                    movieExists = false;
                 }
-            });
-        } else if (menuItemSelected == R.id.test) {
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    Log.i(TAG, "Current movie title is: " + movie.getTitle());
-                    Log.i(TAG, "Movie titles are: " + Arrays.toString(db.movieDao().movieTitles()));
-                    if (Arrays.asList(db.movieDao().movieTitles()).contains(movie.getTitle())) {
-                        movieExists = true;
-                    } else {
-                        movieExists = false;
-                    }
-                    Log.i(TAG, "Is the movie there? " + movieExists);
-                }
-            });
-        }
-        return super.onOptionsItemSelected(item);
+                Log.i(TAG, "Is the movie there? " + movieExists);
+            }
+        });
+        Log.i(TAG, "Movie returns as: " + movieExists);
+        return movieExists;
     }
 
     @Override
@@ -124,7 +152,6 @@ public class DetailActivity extends AppCompatActivity {
         protected Void doInBackground(String... strings) {
 
             movieTrailerReview = NetworkUtils.buildUrl(strings[0], api_key, 0);
-
             if (movieTrailerReview != null){
 
                 try {
@@ -168,7 +195,12 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+            checkExistence();
+            if (movieExists){
+                favImage.setImageResource(R.drawable.favorite);
+            } else {
+                favImage.setImageResource(R.drawable.not_favorite);
+            }
         }
-
     }
 }
