@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -36,6 +37,8 @@ public class DetailActivity extends AppCompatActivity {
     private MovieDatabase db;
 
     private Movie movie;
+
+    private boolean movieExists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,14 +85,27 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int menuItemSelected = item.getItemId();
+        db = MovieDatabase.getInstance(this);
         if (menuItemSelected == R.id.add_to_favorites) {
-            db = MovieDatabase.getInstance(this);
-
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
                     db.movieDao().insertAll(movie);
                     finish();
+                }
+            });
+        } else if (menuItemSelected == R.id.test) {
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(TAG, "Current movie title is: " + movie.getTitle());
+                    Log.i(TAG, "Movie titles are: " + Arrays.toString(db.movieDao().movieTitles()));
+                    if (Arrays.asList(db.movieDao().movieTitles()).contains(movie.getTitle())) {
+                        movieExists = true;
+                    } else {
+                        movieExists = false;
+                    }
+                    Log.i(TAG, "Is the movie there? " + movieExists);
                 }
             });
         }

@@ -21,6 +21,9 @@ public interface MovieDao {
     @Query("SELECT COUNT(*) from movie")
     int countMovie();
 
+    @Query("SELECT title from movie")
+    String[] movieTitles();
+
     @Query("SELECT * FROM movie ORDER BY title")
     List<Movie> getAll();
 

@@ -27,7 +27,6 @@ public class Movie implements Parcelable {
     @Ignore
     private String backdrop;
 
-
     public Movie() {
     }
 
