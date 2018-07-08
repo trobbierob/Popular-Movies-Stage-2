@@ -27,14 +27,12 @@ public final class NetworkUtils {
         Uri builtUri = Uri.parse(BASE_MOVIE_URL + string).buildUpon()
                 .appendQueryParameter("api_key", api_key)
                 .build();
-
         URL url = null;
         try {
             url = new URL(builtUri.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
         return url;
     }
 
@@ -44,14 +42,12 @@ public final class NetworkUtils {
                 .appendQueryParameter("api_key", api_key)
                 .appendQueryParameter("append_to_response", "videos,reviews")
                 .build();
-
         URL url = null;
         try {
             url = new URL(builtUri.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
         return url;
     }
 

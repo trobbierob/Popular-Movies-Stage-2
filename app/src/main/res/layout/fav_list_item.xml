@@ -15,7 +15,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         tools:ignore="HardcodedText"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
     <TextView
         android:id="@+id/fav_movieTitleText"

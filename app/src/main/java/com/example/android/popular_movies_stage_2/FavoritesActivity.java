@@ -40,18 +40,17 @@ public class FavoritesActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
+                db = MovieDatabase.getInstance(getApplicationContext());
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
                         int position = viewHolder.getAdapterPosition();
                         List<Movie> movies = mFavoriteMovieAdapter.getmMovies();
                         db.movieDao().deleteMovie(movies.get(position));
-                        updateMovies();
                     }
                 });
             }
         }).attachToRecyclerView(mRecyclerView);
-
         db = MovieDatabase.getInstance(getApplicationContext());
     }
 
@@ -63,9 +62,7 @@ public class FavoritesActivity extends AppCompatActivity {
 
     private void updateMovies() {
         /*
-         *This AsyncTask will stop the crash
-         *java.lang.IllegalStateException: Cannot access database on the main thread
-         *since it may potentially lock the UI for a long periods of time.
+         * This will access the database off the main thread.
          */
         new AsyncTask<Void, Void, Void>(){
             @Override

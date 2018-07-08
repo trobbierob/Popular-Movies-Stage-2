@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdapter.ViewHolder> {
@@ -43,7 +45,9 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
         final Movie movie = mMovies.get(position);
 
         holder.movieTitle.setText(movie.getTitle());
+        holder.imageView.setImageResource(R.drawable.not_favorite);
         //Glide.with(mContext).load(movie.getImageUrl()).into(holder.imageView);
+        Glide.with(mContext).load(movie.getImageUrl()).into(holder.imageView);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

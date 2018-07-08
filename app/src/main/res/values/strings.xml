@@ -13,4 +13,5 @@
     <string name="favorites_ab">Favorites</string>
     <string name="check_internet">Check Internet Connection</string>
     <string name="parcelable_not_passed">Parcelable not passed.</string>
+    <string name="popular_movies">Popular Movies</string>
 </resources>
