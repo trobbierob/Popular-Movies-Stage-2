@@ -3,6 +3,8 @@ package com.example.android.popular_movies_stage_2;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -33,6 +35,7 @@ public class DetailActivity extends AppCompatActivity {
     private ArrayList<String> videoNameArray = new ArrayList<String>();
     private ArrayList<String> reviewAuthorArray = new ArrayList<String>();
     private ArrayList<String> reviewContentArray = new ArrayList<String>();
+    //private List<String> reviewContentArray = new ArrayList<String>();
 
     private MovieDatabase db;
 
@@ -41,6 +44,10 @@ public class DetailActivity extends AppCompatActivity {
     private boolean movieExists;
 
     private ImageView favImage;
+
+    RecyclerView movieReviewsRV;
+    RecyclerView movieTrailersRV;
+    DetailReviewAdapter dRA;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,6 +208,16 @@ public class DetailActivity extends AppCompatActivity {
             } else {
                 favImage.setImageResource(R.drawable.not_favorite);
             }
+
+            movieReviewsRV = findViewById(R.id.detail_reviews);
+            dRA = new DetailReviewAdapter(DetailActivity.this, reviewContentArray);
+            movieReviewsRV.setAdapter(dRA);
+            movieReviewsRV.setLayoutManager(new LinearLayoutManager(DetailActivity.this));
+
+            movieTrailersRV = findViewById(R.id.detail_trailers);
+            dRA = new DetailReviewAdapter(DetailActivity.this, videoKeyArray);
+            movieTrailersRV.setAdapter(dRA);
+            movieTrailersRV.setLayoutManager(new LinearLayoutManager(DetailActivity.this));
         }
     }
 }

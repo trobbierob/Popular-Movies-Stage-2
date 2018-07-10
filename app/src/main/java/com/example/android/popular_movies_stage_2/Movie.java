@@ -26,6 +26,10 @@ public class Movie implements Parcelable {
     private String releaseDate;
     @Ignore
     private String backdrop;
+    @Ignore
+    private String movieTrailers;
+    @Ignore
+    private String movieReviews;
 
     public Movie() {
     }
@@ -34,6 +38,12 @@ public class Movie implements Parcelable {
     public Movie(String title, String id) {
         this.title = title;
         this.id = id;
+    }
+
+    @Ignore
+    public Movie(String movieTrailers, String movieReviews, int num) {
+        this.movieTrailers = movieTrailers;
+        this.movieReviews = movieReviews;
     }
 
     @Ignore
@@ -128,6 +138,22 @@ public class Movie implements Parcelable {
         this.id = id;
     }
 
+    public String getMovieTrailers() {
+        return movieTrailers;
+    }
+
+    public void setMovieTrailers(String movieTrailers) {
+        this.movieTrailers = movieTrailers;
+    }
+
+    public String getMovieReviews() {
+        return movieReviews;
+    }
+
+    public void setMovieReviews(String movieReviews) {
+        this.movieReviews = movieReviews;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
@@ -148,26 +174,30 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
         dest.writeString(this.title);
         dest.writeString(this.imageUrl);
         dest.writeString(this.voteAverage);
         dest.writeString(this.overview);
         dest.writeString(this.releaseDate);
         dest.writeString(this.backdrop);
-        dest.writeString(this.id);
+        dest.writeString(this.movieTrailers);
+        dest.writeString(this.movieReviews);
     }
 
     protected Movie(Parcel in) {
+        this.id = in.readString();
         this.title = in.readString();
         this.imageUrl = in.readString();
         this.voteAverage = in.readString();
         this.overview = in.readString();
         this.releaseDate = in.readString();
         this.backdrop = in.readString();
-        this.id = in.readString();
+        this.movieTrailers = in.readString();
+        this.movieReviews = in.readString();
     }
 
-    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
         @Override
         public Movie createFromParcel(Parcel source) {
             return new Movie(source);
