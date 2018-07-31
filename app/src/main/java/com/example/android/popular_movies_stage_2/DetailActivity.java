@@ -8,11 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.android.popular_movies_stage_2.db.MovieDatabase;
+import com.example.android.popular_movies_stage_2.sample.SampleDataProvider;
 import com.example.android.popular_movies_stage_2.utilities.NetworkUtils;
 
 import org.json.JSONArray;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -49,6 +52,9 @@ public class DetailActivity extends AppCompatActivity {
     RecyclerView movieTrailersRV;
     DetailReviewAdapter dRA;
 
+    List<Movie> movieList = SampleDataProvider.movieList;
+    List<String> movieNames = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +71,23 @@ public class DetailActivity extends AppCompatActivity {
         TextView movieSynopsis = (TextView) findViewById(R.id.detail_synopsis);
         TextView movieRating = (TextView) findViewById(R.id.detail_user_rating);
         TextView movieReleaseDate = (TextView) findViewById(R.id.detail_release_date);
+
+        ListView testListview = (ListView) findViewById(R.id.trailer_lv);
+
+        /*for (Movie movie : movieList) {
+            movieNames.add(movie.getTitle());
+
+        }*/
+
+        /*ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_list_item_1, movieNames);*/
+
+        //testListview.setAdapter(arrayAdapter);
+
+
+        TestItemAdapter adapter = new TestItemAdapter(this, movieList);
+        testListview.setAdapter(adapter);
+
 
         movie = getIntent().getExtras().getParcelable(MovieAdapter.ITEM_KEY);
 
@@ -88,6 +111,8 @@ public class DetailActivity extends AppCompatActivity {
         } else {
             Log.e(TAG,getString(R.string.parcelable_not_passed));
         }
+
+        attachToAdapter();
 
         favImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,15 +234,19 @@ public class DetailActivity extends AppCompatActivity {
                 favImage.setImageResource(R.drawable.not_favorite);
             }
 
-            movieReviewsRV = findViewById(R.id.detail_reviews);
-            dRA = new DetailReviewAdapter(DetailActivity.this, reviewContentArray);
-            movieReviewsRV.setAdapter(dRA);
-            movieReviewsRV.setLayoutManager(new LinearLayoutManager(DetailActivity.this));
-
-            movieTrailersRV = findViewById(R.id.detail_trailers);
-            dRA = new DetailReviewAdapter(DetailActivity.this, videoKeyArray);
-            movieTrailersRV.setAdapter(dRA);
-            movieTrailersRV.setLayoutManager(new LinearLayoutManager(DetailActivity.this));
+            attachToAdapter();
         }
+    }
+
+    private void attachToAdapter() {
+        movieReviewsRV = findViewById(R.id.detail_reviews);
+        dRA = new DetailReviewAdapter(DetailActivity.this, reviewContentArray);
+        movieReviewsRV.setAdapter(dRA);
+        movieReviewsRV.setLayoutManager(new LinearLayoutManager(DetailActivity.this));
+
+        movieTrailersRV = findViewById(R.id.detail_trailers);
+        dRA = new DetailReviewAdapter(DetailActivity.this, videoKeyArray);
+        movieTrailersRV.setAdapter(dRA);
+        movieTrailersRV.setLayoutManager(new LinearLayoutManager(DetailActivity.this));
     }
 }
