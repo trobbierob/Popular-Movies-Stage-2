@@ -3,7 +3,6 @@ package com.example.android.popular_movies_stage_2;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,16 +38,12 @@ public class ReviewItemAdapter extends ArrayAdapter<Movie> {
         TextView reviewContentTV = (TextView) convertView.findViewById(R.id.review_content_tv);
 
         reviewerTV.setText(movie.getMovieReviewer());
-        reviewerTV.setText(movie.getMovieReviews());
-
-        Log.i(TAG,"Movie Reviewer: " + movie.getMovieReviewer());
-        Log.i(TAG,"Movie Reviews: " + movie.getMovieReviews());
+        reviewContentTV.setText(movie.getMovieReviews());
 
         TextView reviews = (TextView) convertView.findViewById(R.id.review_header_tv);
         if (movie.getMovieReviews().isEmpty()) {
             reviews.setVisibility(View.GONE);
         }
-
         return convertView;
     }
 

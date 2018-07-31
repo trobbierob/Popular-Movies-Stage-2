@@ -11,13 +11,10 @@
         android:id="@+id/reviewer_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="John"
-        tools:ignore="HardcodedText" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/review_content_tv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="This movie bites"
-        tools:ignore="HardcodedText"/>
+        android:layout_height="wrap_content" />
 </LinearLayout>
