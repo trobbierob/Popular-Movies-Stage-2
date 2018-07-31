@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,7 +15,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.android.popular_movies_stage_2.db.MovieDatabase;
-import com.example.android.popular_movies_stage_2.sample.SampleDataProvider;
 import com.example.android.popular_movies_stage_2.utilities.NetworkUtils;
 
 import org.json.JSONArray;
@@ -41,19 +41,19 @@ public class DetailActivity extends AppCompatActivity {
     //private List<String> reviewContentArray = new ArrayList<String>();
 
     private MovieDatabase db;
-
     private Movie movie;
-
+    private Movie movieTrailers;
     private boolean movieExists;
-
     private ImageView favImage;
 
     RecyclerView movieReviewsRV;
     RecyclerView movieTrailersRV;
     DetailReviewAdapter dRA;
 
-    List<Movie> movieList = SampleDataProvider.movieList;
+    //List<Movie> movieList = SampleDataProvider.movieList;
     List<String> movieNames = new ArrayList<>();
+
+    List<Movie> trailers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,24 +72,8 @@ public class DetailActivity extends AppCompatActivity {
         TextView movieRating = (TextView) findViewById(R.id.detail_user_rating);
         TextView movieReleaseDate = (TextView) findViewById(R.id.detail_release_date);
 
-        ListView testListview = (ListView) findViewById(R.id.trailer_lv);
-
-        /*for (Movie movie : movieList) {
-            movieNames.add(movie.getTitle());
-
-        }*/
-
-        /*ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_list_item_1, movieNames);*/
-
-        //testListview.setAdapter(arrayAdapter);
-
-
-        TestItemAdapter adapter = new TestItemAdapter(this, movieList);
-        testListview.setAdapter(adapter);
-
-
         movie = getIntent().getExtras().getParcelable(MovieAdapter.ITEM_KEY);
+        //movieTrailers = getIntent().getExtras().getParcelable()
 
         if (movie != null) {
             // Pass title to Action Bar
@@ -112,7 +96,19 @@ public class DetailActivity extends AppCompatActivity {
             Log.e(TAG,getString(R.string.parcelable_not_passed));
         }
 
-        attachToAdapter();
+
+
+
+        ListView testListview = (ListView) findViewById(R.id.trailer_lv);
+
+        List<String> your_array_list = new ArrayList<String>();
+        /*trailers.add(new Movie("this","that",0));*/
+
+        TrailerItemAdapter adapter = new TrailerItemAdapter(this, trailers);
+        testListview.setAdapter(adapter);
+
+
+        //attachToAdapter();
 
         favImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +120,14 @@ public class DetailActivity extends AppCompatActivity {
                 }
             }
         });
+
+        testListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i(TAG, "Current movie trailer is: " + movie.getMovieTrailers());
+            }
+        });
+
     }
 
     private void removeFromDatabase() {
@@ -183,6 +187,8 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... strings) {
 
+            //Movie trailers = new Movie();
+
             movieTrailerReview = NetworkUtils.buildUrl(strings[0], api_key, 0);
             if (movieTrailerReview != null){
 
@@ -196,8 +202,7 @@ public class DetailActivity extends AppCompatActivity {
                         JSONObject jsonVideoResult = videosArray.getJSONObject(i);
                         String videoName = jsonVideoResult.optString("name");
                         String videoKey = jsonVideoResult.optString("key");
-                        videoNameArray.add(videoName);
-                        videoKeyArray.add(videoKey);
+                        trailers.add(new Movie(videoName,videoKey,0));
                     }
 
                     JSONObject reviewsObject = jsonRootObject.optJSONObject("reviews");
@@ -234,7 +239,13 @@ public class DetailActivity extends AppCompatActivity {
                 favImage.setImageResource(R.drawable.not_favorite);
             }
 
-            attachToAdapter();
+            String [] videoTitleArrayConvert = videoKeyArray.toArray(new String[videoKeyArray.size()]);
+
+
+
+
+            //trailers.add(videoKeyArray);
+            //attachToAdapter();
         }
     }
 

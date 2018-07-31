@@ -29,6 +29,10 @@ public class Movie implements Parcelable {
     @Ignore
     private String movieTrailers;
     @Ignore
+    private String movieTrailerKey;
+    @Ignore
+    private String movieReviewer;
+    @Ignore
     private String movieReviews;
 
     public Movie() {
@@ -41,9 +45,9 @@ public class Movie implements Parcelable {
     }
 
     @Ignore
-    public Movie(String movieTrailers, String movieReviews, int num) {
+    public Movie(String movieTrailers, String movieTrailerKey, int num) {
         this.movieTrailers = movieTrailers;
-        this.movieReviews = movieReviews;
+        this.movieTrailerKey = movieTrailerKey;
     }
 
     @Ignore
@@ -146,6 +150,22 @@ public class Movie implements Parcelable {
         this.movieTrailers = movieTrailers;
     }
 
+    public String getMovieTrailerKey() {
+        return movieTrailerKey;
+    }
+
+    public void setMovieTrailerKey(String movieTrailerKey) {
+        this.movieTrailerKey = movieTrailerKey;
+    }
+
+    public String getMovieReviewer() {
+        return movieReviewer;
+    }
+
+    public void setMovieReviewer(String movieReviewer) {
+        this.movieReviewer = movieReviewer;
+    }
+
     public String getMovieReviews() {
         return movieReviews;
     }
@@ -182,6 +202,8 @@ public class Movie implements Parcelable {
         dest.writeString(this.releaseDate);
         dest.writeString(this.backdrop);
         dest.writeString(this.movieTrailers);
+        dest.writeString(this.movieTrailerKey);
+        dest.writeString(this.movieReviewer);
         dest.writeString(this.movieReviews);
     }
 
@@ -194,6 +216,8 @@ public class Movie implements Parcelable {
         this.releaseDate = in.readString();
         this.backdrop = in.readString();
         this.movieTrailers = in.readString();
+        this.movieTrailerKey = in.readString();
+        this.movieReviewer = in.readString();
         this.movieReviews = in.readString();
     }
 
