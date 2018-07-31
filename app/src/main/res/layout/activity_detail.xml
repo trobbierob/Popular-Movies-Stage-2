@@ -21,7 +21,8 @@
             android:adjustViewBounds="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="Movie Backdrop"/>
 
         <ImageView
             android:id="@+id/detail_movieImage"
@@ -38,7 +39,8 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_backdrop"
-            app:srcCompat="@android:color/holo_blue_light" />
+            app:srcCompat="@android:color/holo_blue_light"
+            android:contentDescription="Movie Poster"/>
 
         <TextView
             android:id="@+id/detail_title"
@@ -119,7 +121,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.805"
             app:layout_constraintStart_toEndOf="@+id/detail_movieImage"
-            app:layout_constraintTop_toTopOf="@+id/detail_user_rating" />
+            app:layout_constraintTop_toTopOf="@+id/detail_user_rating"
+            android:contentDescription="Favorite Heart"/>
 
         <TextView
             android:id="@+id/review_header_tv"
