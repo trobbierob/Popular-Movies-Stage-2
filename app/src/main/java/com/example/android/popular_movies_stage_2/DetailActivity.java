@@ -3,7 +3,6 @@ package com.example.android.popular_movies_stage_2;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,24 +28,12 @@ public class DetailActivity extends AppCompatActivity {
 
     private static final String TAG = DetailActivity.class.getSimpleName();
 
-    private URL movieTrailerReview;
-    private String api_key;
-
-    private ArrayList<String> videoKeyArray = new ArrayList<String>();
-    private ArrayList<String> videoNameArray = new ArrayList<String>();
-    private ArrayList<String> reviewAuthorArray = new ArrayList<String>();
-    private ArrayList<String> reviewContentArray = new ArrayList<String>();
-
-    private MovieDatabase db;
     private Movie movie;
-    private Movie movieTrailers;
-    private boolean movieExists;
+    private String api_key;
+    private MovieDatabase db;
     private ImageView favImage;
-
-    RecyclerView movieReviewsRV;
-    RecyclerView movieTrailersRV;
-    DetailReviewAdapter dRA;
-
+    private boolean movieExists;
+    private URL movieTrailerReview;
     List<Movie> trailers = new ArrayList<>();
     List<Movie> reviewsList = new ArrayList<>();
 
@@ -174,7 +161,6 @@ public class DetailActivity extends AppCompatActivity {
             if (movieTrailerReview != null){
 
                 try {
-
                     String jsonString = NetworkUtils.getResponseFromHttpUrl(movieTrailerReview);
                     JSONObject jsonRootObject = new JSONObject(jsonString);
                     JSONObject videosObject = jsonRootObject.optJSONObject("videos");
