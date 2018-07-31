@@ -51,6 +51,12 @@ public class Movie implements Parcelable {
     }
 
     @Ignore
+    public Movie(String movieReviewer, String movieReviews, int a, int b) {
+        this.movieReviewer = movieReviewer;
+        this.movieReviews = movieReviews;
+    }
+
+    @Ignore
     Movie(String title, String imageUrl, String voteAverage, String overview, String releaseDate, String backdrop) {
         this.title = title;
 

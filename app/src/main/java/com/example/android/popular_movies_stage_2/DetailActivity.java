@@ -3,11 +3,9 @@ package com.example.android.popular_movies_stage_2;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,7 +36,6 @@ public class DetailActivity extends AppCompatActivity {
     private ArrayList<String> videoNameArray = new ArrayList<String>();
     private ArrayList<String> reviewAuthorArray = new ArrayList<String>();
     private ArrayList<String> reviewContentArray = new ArrayList<String>();
-    //private List<String> reviewContentArray = new ArrayList<String>();
 
     private MovieDatabase db;
     private Movie movie;
@@ -50,10 +47,8 @@ public class DetailActivity extends AppCompatActivity {
     RecyclerView movieTrailersRV;
     DetailReviewAdapter dRA;
 
-    //List<Movie> movieList = SampleDataProvider.movieList;
-    List<String> movieNames = new ArrayList<>();
-
     List<Movie> trailers = new ArrayList<>();
+    List<Movie> reviewsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +68,6 @@ public class DetailActivity extends AppCompatActivity {
         TextView movieReleaseDate = (TextView) findViewById(R.id.detail_release_date);
 
         movie = getIntent().getExtras().getParcelable(MovieAdapter.ITEM_KEY);
-        //movieTrailers = getIntent().getExtras().getParcelable()
 
         if (movie != null) {
             // Pass title to Action Bar
@@ -96,19 +90,19 @@ public class DetailActivity extends AppCompatActivity {
             Log.e(TAG,getString(R.string.parcelable_not_passed));
         }
 
-
-
-
-        ListView testListview = (ListView) findViewById(R.id.trailer_lv);
-
-        List<String> your_array_list = new ArrayList<String>();
-        /*trailers.add(new Movie("this","that",0));*/
-
+        /**
+         * Add Trailers to ListView
+        */
+        ListView trailersListview = (ListView) findViewById(R.id.trailer_lv);
         TrailerItemAdapter adapter = new TrailerItemAdapter(this, trailers);
-        testListview.setAdapter(adapter);
+        trailersListview.setAdapter(adapter);
 
-
-        //attachToAdapter();
+        /**
+         * Add Reviews to ListView
+         */
+        ListView reviewsListview = (ListView) findViewById(R.id.review_lv);
+        ReviewItemAdapter rAdapter = new ReviewItemAdapter(this, reviewsList);
+        reviewsListview.setAdapter(rAdapter);
 
         favImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,14 +114,6 @@ public class DetailActivity extends AppCompatActivity {
                 }
             }
         });
-
-        testListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.i(TAG, "Current movie trailer is: " + movie.getMovieTrailers());
-            }
-        });
-
     }
 
     private void removeFromDatabase() {
@@ -162,17 +148,14 @@ public class DetailActivity extends AppCompatActivity {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                Log.i(TAG, "Current movie title is: " + movie.getTitle());
-                Log.i(TAG, "Movie titles are: " + Arrays.toString(db.movieDao().movieTitles()));
                 if (Arrays.asList(db.movieDao().movieTitles()).contains(movie.getTitle())) {
                     movieExists = true;
                 } else {
                     movieExists = false;
                 }
-                Log.i(TAG, "Is the movie there? " + movieExists);
+                Log.i(TAG, "Is the movie in the database? " + movieExists);
             }
         });
-        Log.i(TAG, "Movie returns as: " + movieExists);
         return movieExists;
     }
 
@@ -186,8 +169,6 @@ public class DetailActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(String... strings) {
-
-            //Movie trailers = new Movie();
 
             movieTrailerReview = NetworkUtils.buildUrl(strings[0], api_key, 0);
             if (movieTrailerReview != null){
@@ -211,14 +192,8 @@ public class DetailActivity extends AppCompatActivity {
                         JSONObject jsonReviewResult = reviewArray.getJSONObject(i);
                         String reviewAuthor = jsonReviewResult.optString("author");
                         String reviewContent = jsonReviewResult.optString("content");
-                        reviewAuthorArray.add(reviewAuthor);
-                        reviewContentArray.add(reviewContent);
+                        reviewsList.add(new Movie(reviewAuthor,reviewContent,0,0));
                     }
-
-                    Log.i(TAG,"Video key array is: " + videoKeyArray);
-                    Log.i(TAG,"Video name array is: " + videoNameArray);
-                    Log.i(TAG,"Review author array is: " + reviewAuthorArray);
-                    Log.i(TAG,"Review content array is: " + reviewContentArray);
 
                 } catch (IOException e) {
                     Log.e(TAG,"IOException error is: " + e);
@@ -238,26 +213,6 @@ public class DetailActivity extends AppCompatActivity {
             } else {
                 favImage.setImageResource(R.drawable.not_favorite);
             }
-
-            String [] videoTitleArrayConvert = videoKeyArray.toArray(new String[videoKeyArray.size()]);
-
-
-
-
-            //trailers.add(videoKeyArray);
-            //attachToAdapter();
         }
-    }
-
-    private void attachToAdapter() {
-        movieReviewsRV = findViewById(R.id.detail_reviews);
-        dRA = new DetailReviewAdapter(DetailActivity.this, reviewContentArray);
-        movieReviewsRV.setAdapter(dRA);
-        movieReviewsRV.setLayoutManager(new LinearLayoutManager(DetailActivity.this));
-
-        movieTrailersRV = findViewById(R.id.detail_trailers);
-        dRA = new DetailReviewAdapter(DetailActivity.this, videoKeyArray);
-        movieTrailersRV.setAdapter(dRA);
-        movieTrailersRV.setLayoutManager(new LinearLayoutManager(DetailActivity.this));
     }
 }

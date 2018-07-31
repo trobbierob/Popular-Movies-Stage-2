@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ public class TrailerItemAdapter extends ArrayAdapter<Movie> {
 
     List<Movie> mMovieItems;
     LayoutInflater mInflater;
-
 
     public TrailerItemAdapter(Context context, List<Movie> objects) {
         super(context, R.layout.trailer_item_layout, objects);
@@ -42,16 +40,21 @@ public class TrailerItemAdapter extends ArrayAdapter<Movie> {
 
         final Movie movie = mMovieItems.get(position);
 
-        videoLink.setText(movie.getMovieTrailers());
+        TextView trailers = (TextView) convertView.findViewById(R.id.trailers_header_tv);
+        if (movie.getMovieTrailers().isEmpty()) {
+            trailers.setVisibility(View.GONE);
+        } else {
+            videoLink.setText(movie.getMovieTrailers());
+        }
+
         videoImage.setImageResource(R.drawable.video);
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i(TAG, "Hi" + movie.getMovieTrailerKey());
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                Intent trailerIntent = new Intent(Intent.ACTION_VIEW,
                         Uri.parse("https://www.youtube.com/watch?v=" + movie.getMovieTrailerKey()));
-                getContext().startActivity(browserIntent);
+                getContext().startActivity(trailerIntent);
             }
         });
 
