@@ -41,7 +41,7 @@ public class ReviewItemAdapter extends ArrayAdapter<Movie> {
         reviewContentTV.setText(movie.getMovieReviews());
 
         TextView reviews = (TextView) convertView.findViewById(R.id.review_header_tv);
-        if (movie.getMovieReviews().isEmpty()) {
+        if (movie.getMovieReviews().isEmpty() || movie.getMovieReviews() == null) {
             reviews.setVisibility(View.GONE);
         }
         return convertView;
